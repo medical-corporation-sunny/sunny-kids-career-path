@@ -2844,8 +2844,7 @@ function renderStaffCurrentPosition() {
             <span style="font-size:18px;">B</span> 業務レベル
             <span style="margin-left:auto;font-size:10px;background:#3f8fd4;color:white;padding:2px 8px;border-radius:10px;" title="総合評価に占める配分">評価配分 ${weights.jobLevel}%</span>
           </div>
-          ${grade === 'S1' ? renderS1SubLevels() : ''}
-          ${renderInlineDetail(grade, 'job_level', '業務レベル定義')}
+          ${grade === 'S1' ? renderS1SubLevels() : renderInlineDetail(grade, 'job_level', '業務レベル定義')}
         </div>
 
         <!-- Center: Grade Circle + Description -->
