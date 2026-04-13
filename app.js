@@ -702,6 +702,8 @@ function getCoreValueLevelDescription(levelRange) {
 function renderS1SubLevels() {
   var html = '';
   html += '<div style="margin-bottom:14px;">';
+
+  // Step indicator
   html += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">';
   html += '<div style="flex:1;text-align:center;padding:6px;background:#e3f2fd;border-radius:8px;border:2px solid #42a5f5;font-size:12px;font-weight:700;color:#1565c0;">レベル1</div>';
   html += '<div style="font-size:16px;color:#90caf9;">→</div>';
@@ -709,6 +711,8 @@ function renderS1SubLevels() {
   html += '<div style="font-size:16px;color:#90caf9;">→</div>';
   html += '<div style="flex:1;text-align:center;padding:6px;background:#e8f5e9;border-radius:8px;border:2px dashed #66bb6a;font-size:11px;font-weight:600;color:#2e7d32;">S2へ</div>';
   html += '</div>';
+
+  // Level 1 box
   html += '<div style="background:#f5f9ff;border:1px solid #bbdefb;border-radius:10px;padding:12px;margin-bottom:8px;">';
   html += '<div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">';
   html += '<span style="background:#42a5f5;color:white;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;">Lv.1</span>';
@@ -718,7 +722,10 @@ function renderS1SubLevels() {
   html += '・トレーナーの指示のもと業務を遂行できる<br>';
   html += '・わからないことを溜め込まず質問・相談ができる<br>';
   html += '・小さな成功体験を積み重ね、成長を記録する';
-  html += '</div></div>';
+  html += '</div>';
+  html += '</div>';
+
+  // Level 2 box
   html += '<div style="background:#f5f9ff;border:1px solid #bbdefb;border-radius:10px;padding:12px;margin-bottom:8px;">';
   html += '<div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">';
   html += '<span style="background:#1565c0;color:white;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;">Lv.2</span>';
@@ -728,10 +735,10 @@ function renderS1SubLevels() {
   html += '・職種における特異性を出すことができる<br>';
   html += '・会議で意見・感想を発表し、主体的に参加できる<br>';
   html += '・自分に出来ない案件を適切な上司に相談できる';
-  html += '</div></div>';
-  html += '<div style="background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:8px 12px;font-size:11px;color:#e65100;line-height:1.6;">';
-  html += '<strong>💰 キャリアアップ手当：</strong>レベル1→レベル2で手当額が変わります。';
-  html += '</div></div>';
+  html += '</div>';
+  html += '</div>';
+
+  html += '</div>';
   return html;
 }
 
@@ -2837,7 +2844,8 @@ function renderStaffCurrentPosition() {
             <span style="font-size:18px;">B</span> 業務レベル
             <span style="margin-left:auto;font-size:10px;background:#3f8fd4;color:white;padding:2px 8px;border-radius:10px;" title="総合評価に占める配分">評価配分 ${weights.jobLevel}%</span>
           </div>
-          ${(grade === 'S1' ? renderS1SubLevels() : '') + renderInlineDetail(grade, 'job_level', '業務レベル定義')}
+          ${grade === 'S1' ? renderS1SubLevels() : ''}
+          ${renderInlineDetail(grade, 'job_level', '業務レベル定義')}
         </div>
 
         <!-- Center: Grade Circle + Description -->
@@ -2968,6 +2976,7 @@ function renderStaffCurrentPosition() {
             '<div style="background:white;border-radius:10px;padding:12px;text-align:center;border:1px solid #a5d6a7;">' +
               '<div style="font-size:10px;color:#888;">キャリアアップ手当</div>' +
               '<div style="font-size:18px;font-weight:700;color:#333;">' + formatYen(careerUp) + '</div>' +
+              (grade === 'S1' ? '<div style="font-size:9px;color:#e65100;margin-top:4px;background:#fff8e1;border-radius:4px;padding:2px 6px;">💰 Lv.1→Lv.2で手当額が変わります</div>' : '') +
             '</div>' +
             (posAmt > 0 ? '<div style="background:white;border-radius:10px;padding:12px;text-align:center;border:1px solid #a5d6a7;"><div style="font-size:10px;color:#888;">役職手当（' + pos + '）</div><div style="font-size:18px;font-weight:700;color:#333;">' + formatYen(posAmt) + '</div></div>' : '') +
             (certTotal > 0 ? '<div style="background:white;border-radius:10px;padding:12px;text-align:center;border:1px solid #a5d6a7;"><div style="font-size:10px;color:#888;">資格手当</div><div style="font-size:18px;font-weight:700;color:#333;">' + formatYen(certTotal) + '</div><div style="font-size:9px;color:#aaa;">' + certLabel + '</div></div>' : '') +
