@@ -49,8 +49,6 @@ body {
 header {
   background: var(--white);
   padding: 16px 0;
-  position: sticky;
-  top: 0;
   z-index: 100;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   border-bottom: 1px solid rgba(26, 115, 232, 0.1);
@@ -169,7 +167,7 @@ select:hover {
   padding: 8px 20px;
   margin: 0 -20px 30px -20px;
   position: sticky;
-  top: 60px;
+  top: 0;
   z-index: 99;
 }
 
