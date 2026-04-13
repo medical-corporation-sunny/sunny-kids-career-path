@@ -2976,7 +2976,6 @@ function renderStaffCurrentPosition() {
             '<div style="background:white;border-radius:10px;padding:12px;text-align:center;border:1px solid #a5d6a7;">' +
               '<div style="font-size:10px;color:#888;">キャリアアップ手当</div>' +
               '<div style="font-size:18px;font-weight:700;color:#333;">' + formatYen(careerUp) + '</div>' +
-              (grade === 'S1' ? '<div style="font-size:9px;color:#e65100;margin-top:4px;background:#fff8e1;border-radius:4px;padding:2px 6px;">💰 Lv.1→Lv.2で手当額が変わります</div>' : '') +
             '</div>' +
             (posAmt > 0 ? '<div style="background:white;border-radius:10px;padding:12px;text-align:center;border:1px solid #a5d6a7;"><div style="font-size:10px;color:#888;">役職手当（' + pos + '）</div><div style="font-size:18px;font-weight:700;color:#333;">' + formatYen(posAmt) + '</div></div>' : '') +
             (certTotal > 0 ? '<div style="background:white;border-radius:10px;padding:12px;text-align:center;border:1px solid #a5d6a7;"><div style="font-size:10px;color:#888;">資格手当</div><div style="font-size:18px;font-weight:700;color:#333;">' + formatYen(certTotal) + '</div><div style="font-size:9px;color:#aaa;">' + certLabel + '</div></div>' : '') +
