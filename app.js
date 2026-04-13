@@ -2039,7 +2039,7 @@ function renderSystemInfo() {
           </thead>
           <tbody>
             <tr><td style="padding:10px;border-bottom:1px solid #eee;font-weight:600;">能力・実績の段階</td><td style="padding:10px;border-bottom:1px solid #eee;font-weight:600;">組織内での役割</td></tr>
-            <tr><td style="padding:10px;border-bottom:1px solid #eee;">S1〜S5, SL, L1, L2, M1〜M3, M4 等</td><td style="padding:10px;border-bottom:1px solid #eee;">スタッフ、職種L、副分院L、分院L、M1〜M3、CEO等</td></tr>
+            <tr><td style="padding:10px;border-bottom:1px solid #eee;">S1〜S5, SL, L1, L2, M1〜M3, M4 等</td><td style="padding:10px;border-bottom:1px solid #eee;">スタッフ、職種L、副分院L、分院L、マネージャー、CEO等</td></tr>
             <tr><td style="padding:10px;border-bottom:1px solid #eee;">4つの評価軸の総合評価で決定</td><td style="padding:10px;border-bottom:1px solid #eee;">グレードとは独立して任命</td></tr>
             <tr><td style="padding:10px;border-bottom:1px solid #eee;">年1回（7月1日）更新</td><td style="padding:10px;border-bottom:1px solid #eee;">組織ニーズに応じて随時</td></tr>
             <tr style="background:#fff8e1;"><td style="padding:10px;border-bottom:1px solid #eee;">本給・仕事給・キャリアアップ手当に連動</td><td style="padding:10px;border-bottom:1px solid #eee;">役職手当に連動</td></tr>
