@@ -1464,10 +1464,16 @@ function renderCareerMap() {
     else if (isReached) nodeClass += ' reached';
 
     const phaseLabel = getGradePhaseLabel(grade);
+    const bTier = getGradeBenefitTier(grade);
+    const bInfo = benefitTiers[bTier] || benefitTiers['none'];
+    const badgeHtml = bInfo.label
+      ? '<div style="font-size:9px;margin-top:3px;padding:1px 6px;border-radius:4px;background:' + bInfo.color + ';color:' + bInfo.text + ';border:1px solid ' + bInfo.border + ';white-space:nowrap;line-height:1.4;">' + bInfo.label + '</div>'
+      : '';
     html += `
       <div class="${nodeClass}" data-grade="${grade}">
         <div class="grade-label">${grade}</div>
         <div class="core-value">${phaseLabel}</div>
+        ${badgeHtml}
       </div>
     `;
 
@@ -1505,7 +1511,15 @@ function renderCareerMap() {
             </div>
             <div class="detail-item">
               <div class="detail-label">💼 福利厚生</div>
-              <div class="detail-value">${getGradeBenefits(appState.currentGrade)}</div>
+              <div class="detail-value">${(function(){
+                var tier = getGradeBenefitTier(appState.currentGrade);
+                var info = benefitTiers[tier] || benefitTiers['none'];
+                var label = getGradeBenefits(appState.currentGrade);
+                if (info.label) {
+                  return '<span style="display:inline-block;padding:2px 10px;border-radius:6px;background:' + info.color + ';color:' + info.text + ';border:1px solid ' + info.border + ';font-weight:600;">' + label + '</span>';
+                }
+                return label;
+              })()}</div>
             </div>
           </div>
     `;
@@ -1627,35 +1641,43 @@ function getGradeResponsibilities(grade) {
   return responsibilities[grade] || '職務内容は詳細をご確認ください';
 }
 
-function getGradeBenefits(grade) {
-  const benefits = {
-    'S1': '基本給与体系',
-    'S2': '基本給与体系',
-    'S3': '基本給与体系',
-    'S4': '基本給与体系、裁量労働の検討',
-    'S5': 'フレックス制度、在宅ワーク制度',
-    'SL': 'フレックス制度、在宅ワーク制度、年棒制',
-    'L1': 'フレックス制度、在宅ワーク制度、年棒制、執行役員層の待遇',
-    'L2': 'フレックス制度、在宅ワーク制度、年棒制、執行役員層の待遇',
-    'P3': '基本給与体系',
-    'P4': '基本給与体系、裁量労働の検討',
-    'P5': 'フレックス制度、在宅ワーク制度',
-    'PL': 'フレックス制度、在宅ワーク制度、年棒制',
-    'B2': '基本給与体系',
-    'B3': '基本給与体系',
-    'B4': '基本給与体系、裁量労働の検討',
-    'B5': 'フレックス制度、在宅ワーク制度',
-    'BL': 'フレックス制度、在宅ワーク制度、年棒制',
-    'SP3': '基本給与体系',
-    'SP4': '基本給与体系、裁量労働の検討',
-    'SP5': 'フレックス制度、在宅ワーク制度',
-    'SPL1': 'フレックス制度、在宅ワーク制度、年棒制',
-    'M1': 'フレックス制度、在宅ワーク制度、年棒制',
-    'M2': 'フレックス制度、在宅ワーク制度、年棒制、経営方針決定権',
-    'M3': 'フレックス制度、在宅ワーク制度、年棒制、経営方針決定権',
-    'M4': 'フレックス制度、在宅ワーク制度、年棒制、経営陣待遇'
+// 福利厚生ゾーン定義（Canvaキャリアマップ図準拠）
+var benefitTiers = {
+  'none':       { label: '', color: 'transparent', text: '' },
+  'remote_sup': { label: '在宅ワーク（指示下）', color: '#FFF8E1', text: '#e65100', border: '#FFE082' },
+  'remote':     { label: '在宅ワーク', color: '#FFF3E0', text: '#e65100', border: '#FFCC80' },
+  'flex_field': { label: 'フレックス＋フィールドワーク', color: '#E0F7FA', text: '#00695c', border: '#80CBC4' },
+  'flex_remote':{ label: 'フレックス＋在宅ワーク', color: '#E8F5E9', text: '#2e7d32', border: '#A5D6A7' },
+  'flex_annual':{ label: 'フレックス＋在宅ワーク＋年俸制', color: '#C8E6C9', text: '#1b5e20', border: '#66BB6A' }
+};
+
+function getGradeBenefitTier(grade) {
+  var tierMap = {
+    'S1': 'none', 'S2': 'none', 'S3': 'none', 'S4': 'none',
+    'S5': 'flex_remote', 'SL': 'flex_remote',
+    'L1': 'flex_remote', 'L2': 'flex_remote',
+    'SP3': 'none', 'SP4': 'none',
+    'SP5': 'flex_field',
+    'SPL1': 'flex_remote',
+    'P3': 'remote',
+    'P4': 'flex_remote', 'P5': 'flex_remote',
+    'PL': 'flex_remote',
+    'B2': 'remote_sup',
+    'B3': 'remote', 'B4': 'remote', 'B5': 'remote',
+    'BL': 'flex_remote',
+    'M1': 'flex_remote', 'M2': 'flex_remote',
+    'M3': 'flex_annual', 'M4': 'flex_annual',
+    'PM1': 'flex_remote', 'PM2': 'flex_remote', 'PM3': 'flex_annual',
+    'BM1': 'flex_remote', 'BM2': 'flex_remote', 'BM3': 'flex_annual'
   };
-  return benefits[grade] || '福利厚生は詳細をご確認ください';
+  return tierMap[grade] || 'none';
+}
+
+function getGradeBenefits(grade) {
+  var tier = getGradeBenefitTier(grade);
+  var t = benefitTiers[tier];
+  if (!t || !t.label) return '基本給与体系';
+  return t.label;
 }
 
 function attachCareerMapListeners() {
@@ -2913,7 +2935,7 @@ function renderStaffCurrentPosition() {
               if (ax.weight === 0) return '';
               return '<div style="background:white;border-radius:10px;padding:12px;border:1px solid #e0e0e0;">'
                 + '<div style="font-size:12px;font-weight:600;color:' + ax.color + ';margin-bottom:6px;">' + ax.label + '<span style="float:right;font-size:11px;color:#999;">配分 ' + ax.weight + '%</span></div>'
-                + '<select class="sim-select" data-weight="' + ax.weight + '" onchange="updateSimResult()" style="width:100%;padding:8px 6px;border:2px solid #e0e0e0;border-radius:8px;font-size:12px;cursor:pointer;">'
+                + '<select class="sim-select" data-weight="' + ax.weight + '" data-label="' + ax.label + '" data-color="' + ax.color + '" onchange="updateSimResult()" style="width:100%;padding:8px 6px;border:2px solid #e0e0e0;border-radius:8px;font-size:12px;cursor:pointer;">'
                 + '<option value="">-- 選択 --</option>'
                 + getSimAxisOptions(ax.key, grade)
                 + '</select>'
@@ -3091,7 +3113,9 @@ function updateSimResult() {
       var contribution = v * w / 100;
       totalWeighted += contribution;
       totalWeight += w;
-      breakdown.push({weight:w, score:v, contribution:Math.round(contribution * 10)/10});
+      var label = sel.dataset.label || '';
+      var color = sel.dataset.color || '#42a5f5';
+      breakdown.push({weight:w, score:v, contribution:Math.round(contribution * 10)/10, label:label, color:color});
     }
   });
 
@@ -3126,12 +3150,13 @@ function updateSimResult() {
   html += '<div style="margin-top:12px;text-align:left;">';
   breakdown.forEach(function(b) {
     var pct = b.contribution;
-    html += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;font-size:12px;">';
-    html += '<div style="width:60px;text-align:right;color:#888;">' + b.weight + '% × ' + b.score + '点</div>';
+    html += '<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:12px;">';
+    html += '<div style="width:90px;text-align:left;font-weight:600;color:' + b.color + ';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + b.label + '</div>';
+    html += '<div style="width:60px;text-align:right;color:#888;white-space:nowrap;">' + b.weight + '% × ' + b.score + '点</div>';
     html += '<div style="flex:1;background:#f0f0f0;border-radius:4px;height:16px;overflow:hidden;">';
-    html += '<div style="width:' + pct + '%;height:100%;background:linear-gradient(90deg,#42a5f5,#1565c0);border-radius:4px;min-width:2px;"></div>';
+    html += '<div style="width:' + pct + '%;height:100%;background:' + b.color + ';border-radius:4px;min-width:2px;opacity:0.8;"></div>';
     html += '</div>';
-    html += '<div style="width:40px;font-weight:600;color:#333;">' + b.contribution + '</div>';
+    html += '<div style="width:30px;font-weight:600;color:#333;text-align:right;">' + b.contribution + '</div>';
     html += '</div>';
   });
   html += '</div>';
